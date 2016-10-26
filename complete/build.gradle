@@ -29,5 +29,15 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("com.h2database:h2")
     testCompile("org.springframework.boot:spring-boot-starter-test")
+
+    compile("com.mysema.querydsl:querydsl-apt:3.6.7")
+    compile("com.mysema.querydsl:querydsl-jpa:3.6.7")
 }
+
+
+/*
+    _____ querydsl config _____
+ */
+apply from: 'config-querydsl.gradle'
+
 

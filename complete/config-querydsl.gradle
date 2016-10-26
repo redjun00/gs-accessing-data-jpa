@@ -1,0 +1,42 @@
+/*
+    _____ configuration config _____
+ */
+configurations {
+    querydslapt
+}
+
+sourceSets {
+    querydsl.java.srcDirs = ['src/main/querydsl']
+}
+
+/*
+    _____ QueryDSL config _____
+ */
+task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates the QueryDSL query types') {
+    source = sourceSets.main.java
+    classpath = configurations.compile + configurations.querydslapt
+    println classpath
+    options.compilerArgs = [
+            '-proc:only',
+            '-processor', 'com.mysema.query.apt.jpa.JPAAnnotationProcessor'
+    ]
+    destinationDir = sourceSets.querydsl.java.srcDirs.iterator().next()
+
+    println destinationDir
+    dependencyCacheDir = compileJava.dependencyCacheDir
+}
+
+compileJava {
+    dependsOn generateQueryDSL
+    source generateQueryDSL.destinationDir
+}
+
+clean {
+    delete sourceSets.querydsl.java.srcDirs
+}
+
+idea {
+    module {
+        sourceDirs += file('src/main/querydsl')
+    }
+}
